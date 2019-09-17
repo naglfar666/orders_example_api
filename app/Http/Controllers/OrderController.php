@@ -20,6 +20,32 @@ class OrderController extends Controller
   }
 
   /**
+   * Getting single Order info
+   *
+   * @param integer $id - Id of Product
+   *
+   * @return Response|array
+   */
+  public function single($id)
+  {
+    $Order = \App\Order::find($id);
+
+    if (!$Order) {
+      return response(
+        $this->ResponseBuilder
+          ->error()
+          ->setText('Order not found')
+          ->build()
+      , 400);
+    }
+
+    return $this->ResponseBuilder
+            ->ok()
+            ->setData($Order)
+            ->build();
+  }
+
+  /**
    * Getting list of orders
    *
    * @return array
@@ -138,5 +164,17 @@ class OrderController extends Controller
             ->setData($Order)
             ->build();
 
+  }
+
+  /**
+   * Removing the order
+   *
+   * @param integer $id - Id of the order
+   *
+   * @return array
+   */
+  public function remove($id)
+  {
+    // code...
   }
 }

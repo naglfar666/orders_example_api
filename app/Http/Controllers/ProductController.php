@@ -20,6 +20,32 @@ class ProductController extends Controller
   }
 
   /**
+   * Getting single Product info
+   *
+   * @param integer $id - Id of Product
+   *
+   * @return Response|array
+   */
+  public function single($id)
+  {
+    $Product = \App\Product::find($id);
+
+    if (!$Product) {
+      return response(
+        $this->ResponseBuilder
+          ->error()
+          ->setText('Product not found')
+          ->build()
+      , 400);
+    }
+
+    return $this->ResponseBuilder
+            ->ok()
+            ->setData($Product)
+            ->build();
+  }
+
+  /**
    * Getting list of products
    *
    * @return array
@@ -68,7 +94,7 @@ class ProductController extends Controller
    *
    * @param Request $request
    *
-   * @return array
+   * @return Response|array
    */
   public function edit(Request $request)
   {

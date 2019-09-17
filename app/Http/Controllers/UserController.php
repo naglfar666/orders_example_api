@@ -21,13 +21,13 @@ class UserController extends Controller
   }
 
   /**
-   * Getting user's profile info
+   * Getting single User info
    *
    * @param integer $id - Id of user
    *
    * @return Response|array
    */
-  public function profile($id)
+  public function single($id)
   {
     $User = \App\User::find($id);
 
@@ -42,7 +42,7 @@ class UserController extends Controller
 
     return $this->ResponseBuilder
             ->ok()
-            ->setData($user)
+            ->setData($User)
             ->build();
   }
 
