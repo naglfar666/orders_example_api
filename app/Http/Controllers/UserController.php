@@ -9,6 +9,18 @@ class UserController extends Controller
 {
 
   /**
+   * Builder class for the response
+   *
+   * @var ResponseBuilder|null
+   */
+  private $ResponseBuilder = null;
+
+  public function __construct()
+  {
+    $this->ResponseBuilder = new ResponseBuilder();
+  }
+
+  /**
    * Getting user's profile info
    *
    * @param integer $id - Id of user
@@ -17,20 +29,18 @@ class UserController extends Controller
    */
   public function profile($id)
   {
-    $user = \App\User::find($id);
+    $User = \App\User::find($id);
 
-    $ResponseBuilder = new ResponseBuilder();
-
-    if (!$user) {
+    if (!$User) {
       return response(
-        $ResponseBuilder
+        $this->ResponseBuilder
           ->error()
           ->setText('User not found')
           ->build()
       , 400);
     }
 
-    return $ResponseBuilder
+    return $this->ResponseBuilder
             ->ok()
             ->setData($user)
             ->build();
@@ -43,12 +53,72 @@ class UserController extends Controller
    */
   public function list()
   {
-    $ResponseBuilder = new ResponseBuilder();
-
-    return $ResponseBuilder
+    return $this->ResponseBuilder
             ->ok()
             ->setData(\App\User::all())
             ->build();
   }
-  
+
+  /**
+   * Adding new user
+   *
+   * @param Request $request
+   *
+   * @return array
+   */
+  public function add(Request $request)
+  {
+    $request->validate([
+      'name' => 'required|max:255',
+      'surname' => 'required|max:255'
+    ]);
+
+    $User = new \App\User();
+    $User->name = $request->input('name');
+    $User->surname = $request->input('surname');
+    $User->date_add = time();
+    $User->save();
+
+    return $this->ResponseBuilder
+            ->ok()
+            ->setData($User)
+            ->build();
+  }
+
+  /**
+   * Editing the user
+   *
+   * @param Request $request
+   *
+   * @return array
+   */
+  public function edit(Request $request)
+  {
+    $request->validate([
+      'id' => 'required|numeric',
+      'name' => 'required|max:255',
+      'surname' => 'required|max:255'
+    ]);
+
+    $User = \App\User::find($request->input('id'));
+
+    if (!$User) {
+      return response(
+        $this->ResponseBuilder
+          ->error()
+          ->setText('User not found')
+          ->build()
+      , 400);
+    }
+
+    $User->name = $request->input('name');
+    $User->surname = $request->input('surname');
+    $User->save();
+
+    return $this->ResponseBuilder
+            ->ok()
+            ->setData($User)
+            ->build();
+  }
+
 }

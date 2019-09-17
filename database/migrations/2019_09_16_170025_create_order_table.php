@@ -18,6 +18,8 @@ class CreateOrderTable extends Migration
             $table->bigInteger('user_id');
             $table->bigInteger('product_id');
             $table->bigInteger('quantity');
+            $table->double('discount');
+            $table->double('price');
             $table->integer('date_add');
         });
     }

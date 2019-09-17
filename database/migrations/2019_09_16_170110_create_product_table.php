@@ -17,6 +17,8 @@ class CreateProductTable extends Migration
             $table->bigIncrements('id');
             $table->char('title',128);
             $table->double('discount');
+            $table->integer('discount_quantity');
+            $table->double('price');
             $table->integer('date_add');
         });
     }
