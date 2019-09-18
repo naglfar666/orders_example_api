@@ -121,4 +121,31 @@ class UserController extends Controller
             ->build();
   }
 
+  /**
+   * Removing user
+   *
+   * @param integer $id - Id of user
+   *
+   * @return Response|array
+   */
+  public function delete($id)
+  {
+    $User = \App\User::find($id);
+
+    if (!$User) {
+      return response(
+        $this->ResponseBuilder
+          ->error()
+          ->setText('User not found')
+          ->build()
+      , 400);
+    }
+
+    $User->delete();
+    
+    return $this->ResponseBuilder
+            ->ok()
+            ->build();
+  }
+
 }
