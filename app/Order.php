@@ -61,7 +61,10 @@ class Order extends Model
               'user.name AS user_name',
               'user.id AS user_id',
               $this->table.'.id AS id',
-              $this->table.'.date_add AS date_add'
+              $this->table.'.date_add AS date_add',
+              $this->table.'.price AS price',
+              $this->table.'.discount AS discount',
+              $this->table.'.quantity AS quantity'
             );
 
     if ($request->filterDate == 'day') {

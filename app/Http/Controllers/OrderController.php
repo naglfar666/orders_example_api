@@ -167,14 +167,29 @@ class OrderController extends Controller
   }
 
   /**
-   * Removing the order
+   * Removing order
    *
-   * @param integer $id - Id of the order
+   * @param integer $id - Id of Product
    *
-   * @return array
+   * @return Response|array
    */
-  public function remove($id)
+  public function delete($id)
   {
-    // code...
+    $Order = \App\Order::find($id);
+
+    if (!$Order) {
+      return response(
+        $this->ResponseBuilder
+          ->error()
+          ->setText('Order not found')
+          ->build()
+      , 400);
+    }
+
+    $Order->delete();
+
+    return $this->ResponseBuilder
+            ->ok()
+            ->build();
   }
 }

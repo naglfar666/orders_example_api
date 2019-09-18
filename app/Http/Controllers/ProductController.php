@@ -128,4 +128,31 @@ class ProductController extends Controller
             ->setData($Product)
             ->build();
   }
+
+  /**
+   * Removing product
+   *
+   * @param integer $id - Id of Product
+   *
+   * @return Response|array
+   */
+  public function delete($id)
+  {
+    $Product = \App\Product::find($id);
+
+    if (!$Product) {
+      return response(
+        $this->ResponseBuilder
+          ->error()
+          ->setText('Product not found')
+          ->build()
+      , 400);
+    }
+
+    $Product->delete();
+
+    return $this->ResponseBuilder
+            ->ok()
+            ->build();
+  }
 }
