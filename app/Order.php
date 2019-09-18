@@ -81,6 +81,8 @@ class Order extends Model
       $Data->where($this->table.'.product_id', '=', $request->filterProduct);
     }
 
+    $Data->orderBy($this->table.'.id', 'desc');
+
     return $Data->paginate(5);
   }
 }
